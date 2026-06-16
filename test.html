@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Tracker - Quick Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .pass { border-left-color: #4caf50; }
+        .fail { border-left-color: #f44336; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .log { background: #f9f9f9; padding: 10px; margin: 10px 0; border-radius: 4px; max-height: 200px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Attendance Tracker - Diagnostic Test</h1>
+    
+    <div class="test-box pass">
+        <h3>✅ Test 1: Check JavaScript Loaded</h3>
+        <p>If this page loaded, JavaScript is working.</p>
+        <button onclick="test1()">Run Test</button>
+    </div>
+
+    <div class="test-box">
+        <h3>✅ Test 2: Check Local Storage</h3>
+        <p>Verifies browser localStorage is available.</p>
+        <button onclick="test2()">Run Test</button>
+    </div>
+
+    <div class="test-box">
+        <h3>✅ Test 3: Test JSON Parsing</h3>
+        <p>Simulates parsing attendance data.</p>
+        <button onclick="test3()">Run Test</button>
+    </div>
+
+    <div class="test-box">
+        <h3>✅ Test 4: Simulate Fetch (Requires Web App URL)</h3>
+        <p>Tests the fetch call to Google Apps Script.</p>
+        <input type="text" id="testUrl" placeholder="Paste your Web App URL here" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+        <button onclick="test4()">Run Test</button>
+    </div>
+
+    <div class="test-box">
+        <h3>📋 Test Results</h3>
+        <div class="log" id="results"></div>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'pass' ? '#4caf50' : type === 'fail' ? '#f44336' : '#333';
+            const icon = type === 'pass' ? '✅' : type === 'fail' ? '❌' : 'ℹ️';
+            resultsDiv.innerHTML += `<div style="color: ${color};">${icon} [${timestamp}] ${message}</div>`;
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        function test1() {
+            log('Test 1: JavaScript is loaded and working', 'pass');
+        }
+
+        function test2() {
+            try {
+                localStorage.setItem('test', 'value');
+                const value = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                log('Test 2: localStorage is working', 'pass');
+            } catch (e) {
+                log(`Test 2 Failed: ${e.message}`, 'fail');
+            }
+        }
+
+        function test3() {
+            try {
+                const testData = {
+                    records: [
+                        { name: 'Test Student 1', status: 'present' },
+                        { name: 'Test Student 2', status: 'absent' }
+                    ]
+                };
+                const json = JSON.stringify(testData);
+                const parsed = JSON.parse(json);
+                log(`Test 3: Successfully parsed ${parsed.records.length} records`, 'pass');
+            } catch (e) {
+                log(`Test 3 Failed: ${e.message}`, 'fail');
+            }
+        }
+
+        function test4() {
+            const url = document.getElementById('testUrl').value.trim();
+            if (!url) {
+                log('Test 4: Please paste a Web App URL', 'fail');
+                return;
+            }
+
+            log('Test 4: Sending test data to Google Apps Script...', 'info');
+
+            const testData = {
+                records: [
+                    { name: 'Test Student', status: 'present' }
+                ]
+            };
+
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(testData)
+            })
+            .then(response => {
+                log(`Response status: ${response.status}`, 'info');
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    log(`Test 4 PASSED: ${data.message}`, 'pass');
+                    log(`Rows added: ${data.rowsAdded}`, 'pass');
+                } else {
+                    log(`Test 4: Server returned error: ${data.message}`, 'fail');
+                }
+            })
+            .catch(error => {
+                log(`Test 4 Failed: ${error.message}`, 'fail');
+                log('Make sure the Web App URL is correct', 'info');
+            });
+        }
+    </script>
+</body>
+</html>

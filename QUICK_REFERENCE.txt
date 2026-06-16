@@ -1,0 +1,98 @@
+# Quick Reference - Attendance Tracker Setup
+
+## Phase 1: Google Sheet Setup ✅
+
+```
+1. Go to sheets.google.com
+2. Create blank spreadsheet
+3. Name it: "Grade 11 Attendance"
+4. Rename first tab to: "Log"
+5. Add headers in Row 1:
+   A1: Timestamp
+   B1: Student Name
+   C1: Status
+```
+
+## Phase 2: Google Apps Script Deployment ✅
+
+```
+1. In Google Sheet: Extensions → Apps Script
+2. Delete existing code
+3. PASTE entire code from: google-apps-script.js
+4. Click Save (💾)
+5. Click Deploy → New deployment
+6. Click ⚙️ next to "Select type"
+7. Choose: Web app
+8. Set:
+   - Execute as: Me (your email)
+   - Who has access: Anyone
+9. Click Deploy
+10. Authorize all permissions
+11. COPY the Web App URL
+```
+
+### Web App URL Format:
+```
+https://script.google.com/macros/d/[LONG_ID]/userweb/access/v1/[MORE_ID]
+```
+
+## Phase 3: Configure App ✅
+
+```
+1. Open: index.html (in browser)
+2. Click: ⚙️ Settings (bottom right)
+3. Paste: Web App URL from Phase 2, Step 11
+4. Click: Save
+5. Close modal
+```
+
+## Phase 4: Test ✅
+
+```
+1. Click: Load Roster
+2. Mark: 3-4 students (Present/Absent/Late)
+3. Click: Submit Attendance
+4. Go to: Google Sheet (Log tab)
+5. Refresh: F5
+6. Check: Data appears in columns A, B, C
+
+✅ If you see data → Everything works!
+```
+
+## Daily Use
+
+```
+1. Open index.html
+2. Click Load Roster
+3. Mark attendance
+4. Click Submit Attendance
+5. Done!
+```
+
+## If Something Fails
+
+| Error | Fix |
+|-------|-----|
+| "Web App URL not configured" | Click ⚙️, paste URL, save |
+| "Unauthorized" during deploy | Delete deployment, try again, click Allow |
+| Nothing in Google Sheet | Check sheet name is "Log" |
+| "Attendance submitted" but no data | Verify Web App URL is correct |
+| JSON parse error | Check google-apps-script.js code has no typos |
+
+## Important Settings
+
+✅ **MUST BE:**
+- Execute as: **Me (your email)**
+- Who has access: **Anyone**
+- Sheet name: **Log** (exact spelling)
+- Function name: **doPost** (in Apps Script)
+
+❌ **DO NOT:**
+- Deploy as "Regular Web App" (choose "Web app")
+- Change the sheet name after configuring
+- Share the Web App URL publicly
+- Modify the Apps Script code
+
+---
+
+**Print this page or bookmark it for quick reference!**

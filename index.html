@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 11 Attendance Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📋 Attendance Tracker</h1>
+            <div class="header-controls">
+                <input type="text" id="classNameInput" placeholder="Class Name (e.g., Biology 11A)" value="STEM A" class="input-field">
+                <button onclick="resetSession()" class="btn-secondary">Reset</button>
+            </div>
+        </div>
+
+        <!-- Configuration Section -->
+        <div class="config-section">
+            <h2>Configuration</h2>
+            <textarea id="rosterInput" placeholder="Paste student names (one per line)&#10;Example:&#10;Alice Johnson&#10;Bob Smith&#10;Carol Lee" class="textarea-field">ABESA, DYLAN JAMES TESORERO
+BOLIVAR, SHAN KESSNER RANCE
+BUENA, DANN CHRISTIAN SIGUENZA
+COLLANTES, FRAZIER GABRIEL PANTALEON
+CORDIS, JAC VINCE OBOGNE
+DE LA TORRE, SEAN GABRIEL BONGANAY
+LORENTE, RONALD JR. LANUZO
+NIEVA, MARK WILLAN AILES
+PICZON, XIAN LEONEIL CONCORDIA
+PUNAYO, ZEIJAN MARTIREZ
+RAMOS, KEN ABIEL OLLETE
+ROMALES, JOHN MICHAEL GALLENITO
+VILLABLANCA, CHANEL KELLY MANUEL
+VILLAMIN, ANTONIO JOSE
+ALARTE, MARIAE RIZCHANE GUIRIBA
+ALMOITE, JANNA LYN PADUA
+AVENGOZA, THANDIE MISCHE
+BAGASINA, SHARMAINE KATE CAMILO
+CABILIN, ELLA SHAINE DARANG
+CADAG, HANNAH ANGEL MARAVILLA
+CARINGAL, PRECIOUS CHLOE MADERA
+CARIZO, KRISTINE MARGARETTE MARCO
+CASONGCAD, ARIENNE LLANERA
+CLORES, CAITLIN FAY OTORDOS
+DELA CRUZ, MARJ GRAZEL AZADA
+GAMINDE, MAXSENE ONG
+GARING, KATRINA CASSANDRA BRAVO
+GAVICA, JILIAN KAYE PARADO
+IMPERIAL, ALIYA REANN ROSE CONCEPCION
+LORILLA, ANIKA GWEN PILAPIL
+MAGDAMIT, AYANA JEN SANTIAGO
+MOISES, GREIMARL FAITH BRONZAL
+OCAMPO, FRANCESCA YNA MARITHE PRILLES
+PANALIGAN, PAMELA MONTANEZ
+PAR, JAMIE LYN ENRIQUEZ
+PERALTA, FAYE GLEAYNN LAZARTE
+REBAMONTE, LIANNE ABAWAG
+REGULADO, EUNICE PARMA
+RIVERO, ANGELITA FE AUTOR
+SAN BUENAVENTURA, KRISTA YABA</textarea>
+            <button onclick="loadRoster()" class="btn-primary">Load Roster</button>
+            <div id="configMessage" class="message"></div>
+        </div>
+
+        <!-- Attendance Section -->
+        <div class="attendance-section" id="attendanceSection" style="display:none;">
+            <div class="attendance-header">
+                <h2 id="classDisplay">Class: -</h2>
+                <div class="attendance-stats">
+                    <span>Present: <strong id="presentCount">0</strong></span>
+                    <span>Absent: <strong id="absentCount">0</strong></span>
+                    <span>Late: <strong id="lateCount">0</strong></span>
+                </div>
+            </div>
+
+            <!-- Student List -->
+            <div class="student-list" id="studentList"></div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button onclick="submitAttendance()" class="btn-submit">✓ Submit Attendance</button>
+                <button onclick="exportToCSV()" class="btn-secondary">⬇ Export CSV</button>
+                <div id="feedbackMessage" class="message"></div>
+            </div>
+        </div>
+
+        <!-- Configuration Modal -->
+        <div class="modal" id="configModal" style="display:none;">
+            <div class="modal-content">
+                <h2>Configuration</h2>
+                <label>Google Apps Script Web App URL:</label>
+                <input type="text" id="webAppUrl" placeholder="Paste your Web App URL here" class="input-field">
+                <div class="button-group">
+                    <button onclick="saveWebAppUrl()" class="btn-primary">Save</button>
+                    <button onclick="closeModal()" class="btn-secondary">Close</button>
+                </div>
+                <p class="info-text">Don't have a URL yet? Follow the setup guide in the README.md to create a Google Apps Script endpoint.</p>
+            </div>
+        </div>
+
+        <!-- Settings Icon -->
+        <button onclick="openConfigModal()" class="settings-btn">⚙️</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

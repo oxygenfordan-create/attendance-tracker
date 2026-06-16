@@ -158,6 +158,99 @@ body {
     font-size: 14px;
 }
 
+/* Date Input */
+.date-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.date-input-group label {
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
+
+.date-input-group input {
+    padding: 8px 12px;
+    border: 2px solid #667eea;
+    border-radius: 6px;
+    font-size: 14px;
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Summary Section */
+.summary-section {
+    background: #f0f7ff;
+    border: 2px solid #2196f3;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    page-break-inside: avoid;
+}
+
+.summary-section h3 {
+    color: #1976d2;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.summary-box {
+    background: white;
+    border-left: 5px solid #f44336;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.summary-box h4 {
+    color: #f44336;
+    margin: 0 0 10px 0;
+    font-size: 14px;
+}
+
+.summary-box:last-child {
+    margin-bottom: 0;
+}
+
+#tardyBox {
+    border-left-color: #ff9800;
+}
+
+#tardyBox h4 {
+    color: #ff9800;
+}
+
+.summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.summary-list-item {
+    padding: 10px;
+    background: #fafafa;
+    border-radius: 4px;
+    font-size: 13px;
+    border-left: 3px solid #999;
+}
+
+.summary-list-item.absent {
+    border-left-color: #f44336;
+}
+
+.summary-list-item.tardy {
+    border-left-color: #ff9800;
+}
+
+.summary-list-item:empty::before {
+    content: "None";
+    color: #999;
+    font-style: italic;
+}
+
 /* Student List */
 .student-list {
     display: grid;
@@ -310,6 +403,36 @@ body {
 .settings-btn:hover {
     background: #f57c00;
     transform: scale(1.1);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    color: #333;
 }
 
 /* Responsive */

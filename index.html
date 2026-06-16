@@ -68,6 +68,10 @@ SAN BUENAVENTURA, KRISTA YABA</textarea>
         <div class="attendance-section" id="attendanceSection" style="display:none;">
             <div class="attendance-header">
                 <h2 id="classDisplay">Class: -</h2>
+                <div class="date-input-group">
+                    <label for="attendanceDate">📅 Date:</label>
+                    <input type="date" id="attendanceDate" class="input-field">
+                </div>
                 <div class="attendance-stats">
                     <span>Present: <strong id="presentCount">0</strong></span>
                     <span>Absent: <strong id="absentCount">0</strong></span>
@@ -78,10 +82,40 @@ SAN BUENAVENTURA, KRISTA YABA</textarea>
             <!-- Student List -->
             <div class="student-list" id="studentList"></div>
 
+            <!-- Summary Section (for screenshot) -->
+            <div id="summarySection" style="display:none;" class="summary-section">
+                <h3>📋 Summary</h3>
+                
+                <div class="summary-box" id="absentBox" style="display:none;">
+                    <h4>❌ ABSENT</h4>
+                    <div id="absentList" class="summary-list"></div>
+                </div>
+
+                <div class="summary-box" id="tardyBox" style="display:none;">
+                    <h4>⏱ LATE/TARDY</h4>
+                    <div id="tardyList" class="summary-list"></div>
+                </div>
+            </div>
+
             <!-- Action Buttons -->
             <div class="action-buttons">
                 <button onclick="exportToCSV()" class="btn-submit">⬇ Export CSV</button>
+                <button onclick="takeScreenshot()" class="btn-secondary">📸 Screenshot Summary</button>
                 <div id="feedbackMessage" class="message"></div>
+            </div>
+        </div>
+
+        <!-- CSV Export Modal (for mobile) -->
+        <div class="modal" id="csvModal" style="display:none;">
+            <div class="modal-content">
+                <h2>Attendance Export</h2>
+                <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Your attendance data:</p>
+                <textarea id="csvContent" readonly style="width: 100%; height: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; font-size: 12px; resize: none;"></textarea>
+                <div class="button-group" style="margin-top: 15px;">
+                    <button onclick="copyCsvToClipboard()" class="btn-primary">📋 Copy to Clipboard</button>
+                    <button onclick="downloadCsvFile()" class="btn-primary">⬇ Download File</button>
+                    <button onclick="closeCsvModal()" class="btn-secondary">Close</button>
+                </div>
             </div>
         </div>
 

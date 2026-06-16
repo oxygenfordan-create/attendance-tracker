@@ -99,7 +99,7 @@ function updateStats() {
 }
 
 /**
- * Export attendance to CSV
+ * Export attendance to CSV (mobile-friendly)
  */
 function exportToCSV() {
     const className = document.getElementById('classNameInput').value || 'Attendance';
@@ -112,18 +112,55 @@ function exportToCSV() {
         csv += `${student},${status}\n`;
     });
 
-    // Create blob and download
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `attendance_${new Date().getTime()}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    // Store CSV data and show modal
+    document.getElementById('csvContent').value = csv;
+    document.getElementById('csvModal').style.display = 'flex';
+    
+    showMessage('feedbackMessage', 'CSV ready to export', 'success');
+}
 
-    showMessage('feedbackMessage', 'Attendance exported as CSV', 'success');
+/**
+ * Copy CSV data to clipboard
+ */
+function copyCsvToClipboard() {
+    const csvContent = document.getElementById('csvContent');
+    csvContent.select();
+    
+    try {
+        document.execCommand('copy');
+        showMessage('feedbackMessage', '✓ Copied to clipboard!', 'success');
+        closeCsvModal();
+    } catch (err) {
+        showMessage('feedbackMessage', 'Failed to copy. Please copy manually.', 'error');
+    }
+}
+
+/**
+ * Download CSV file (fallback for desktop)
+ */
+function downloadCsvFile() {
+    const csv = document.getElementById('csvContent').value;
+    const className = document.getElementById('classNameInput').value || 'Attendance';
+    
+    // Try blob approach (works on desktop)
+    try {
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `attendance_${className}_${new Date().getTime()}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showMessage('feedbackMessage', '✓ File downloaded!', 'success');
+        closeCsvModal();
+    } catch (err) {
+        // Fallback: show as data URL
+        const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csv);
+        window.open(encodedUri);
+        showMessage('feedbackMessage', 'Opening CSV in new window...', 'info');
+    }
 }
 
 /**
@@ -167,3 +204,20 @@ function showMessage(elementId, text, type) {
 function escapeQuotes(str) {
     return str.replace(/'/g, "\\'");
 }
+
+/**
+ * Close CSV modal
+ */
+function closeCsvModal() {
+    document.getElementById('csvModal').style.display = 'none';
+}
+
+/**
+ * Close modal when clicking outside
+ */
+window.addEventListener('click', function(event) {
+    const csvModal = document.getElementById('csvModal');
+    if (event.target === csvModal) {
+        csvModal.style.display = 'none';
+    }
+});

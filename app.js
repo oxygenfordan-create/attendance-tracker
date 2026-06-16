@@ -1,14 +1,6 @@
 // Global state
 let students = [];
 let attendance = {};
-let webAppUrl = localStorage.getItem('webAppUrl') || '';
-
-// Initialize app on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (webAppUrl) {
-        console.log('Web App URL loaded from storage');
-    }
-});
 
 /**
  * Load roster from textarea input
@@ -107,61 +99,6 @@ function updateStats() {
 }
 
 /**
- * Submit attendance to Google Sheets
- */
-function submitAttendance() {
-    if (!webAppUrl) {
-        showMessage('feedbackMessage', 'Web App URL not configured. Click ⚙️ to set it up.', 'error');
-        return;
-    }
-
-    const unmarked = students.filter(s => attendance[s] === null);
-    if (unmarked.length > 0) {
-        const confirmSubmit = confirm(
-            `${unmarked.length} student(s) not marked:\n${unmarked.join(', ')}\n\nSubmit anyway?`
-        );
-        if (!confirmSubmit) return;
-    }
-
-    // Show loading state
-    showMessage('feedbackMessage', '⏳ Submitting attendance...', 'info');
-
-    // Prepare data
-    const records = students.map(student => ({
-        name: student,
-        status: attendance[student] || 'unmarked'
-    }));
-
-    const payload = JSON.stringify({ records });
-
-    // Send to Google Sheets via Apps Script
-    fetch(webAppUrl, {
-        method: 'POST',
-        body: payload
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.status === 'success') {
-            showMessage('feedbackMessage', '✓ Attendance submitted successfully!', 'success');
-            setTimeout(() => {
-                resetSession();
-            }, 2000);
-        } else {
-            showMessage('feedbackMessage', `Error: ${data.message || 'Unknown error'}`, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Fetch Error:', error);
-        showMessage('feedbackMessage', `Error submitting attendance: ${error.message}. Check console (F12) for details.`, 'error');
-    });
-}
-
-/**
  * Export attendance to CSV
  */
 function exportToCSV() {
@@ -221,46 +158,6 @@ function showMessage(elementId, text, type) {
         setTimeout(() => {
             messageEl.classList.remove('show');
         }, 4000);
-    }
-}
-
-/**
- * Save Web App URL
- */
-function saveWebAppUrl() {
-    const url = document.getElementById('webAppUrl').value.trim();
-    if (!url) {
-        alert('Please enter a Web App URL');
-        return;
-    }
-    localStorage.setItem('webAppUrl', url);
-    webAppUrl = url;
-    alert('Web App URL saved!');
-    closeModal();
-}
-
-/**
- * Open configuration modal
- */
-function openConfigModal() {
-    document.getElementById('configModal').style.display = 'flex';
-    document.getElementById('webAppUrl').value = webAppUrl;
-}
-
-/**
- * Close configuration modal
- */
-function closeModal() {
-    document.getElementById('configModal').style.display = 'none';
-}
-
-/**
- * Close modal when clicking outside
- */
-window.onclick = function(event) {
-    const modal = document.getElementById('configModal');
-    if (event.target === modal) {
-        modal.style.display = 'none';
     }
 }
 
